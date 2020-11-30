@@ -527,14 +527,18 @@ typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
 }
 
 - (void)displayLayer:(CALayer *)layer {
-    UIImage *currentFrame = _curFrame;
-    if (!currentFrame) {
-        currentFrame = self.image;
+//    UIImage *currentFrame = _curFrame;
+    if (_curFrame) {
+        layer.contents = (__bridge id)_curFrame.CGImage;
+    }else{
+        if ([UIImageView instancesRespondToSelector:@selector(displayLayer:)]) {
+            [super displayLayer:layer];
+        }
     }
-    if (currentFrame) {
-        layer.contentsScale = currentFrame.scale;
-        layer.contents = (__bridge id)currentFrame.CGImage;
-    }
+//    if (currentFrame) {
+//        layer.contentsScale = currentFrame.scale;
+//        layer.contents = (__bridge id)currentFrame.CGImage;
+//    }
 }
 
 - (void)setContentsRect:(CGRect)rect forImage:(UIImage *)image{
